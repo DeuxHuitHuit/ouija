@@ -27,10 +27,39 @@
 			bottom: 0;	
 
 			z-index: 1;
-			background: magenta url(img/ouija.png) no-repeat 50% 50%;
+			background: #000 url(img/ouija.png) no-repeat 50% 50%;
 			background-size: cover;
 		}
+		#p {
+			position: fixed;
+			top: 0;
+			left: 0;	
+			right: 0;
+			bottom: 0;
+			z-index: 2;
+			background: transparent url(img/planchette.png) no-repeat 0% 0%;
+			background-size: : 137px 180px;
+		}
+		#p.first {
+			transform: scale3d(1.2, 1.2, 1) translate3d(100%, -25%, 0px) rotateZ(-25deg);
+		}
+		#p.first-on {
+			transition: transform ease-in 5s;
+			transform: scale3d(1, 1, 1) translate3d(-25%, 125%, 0px) rotateZ(25deg);
+		}
+		#p.second {
+			transform: scale3d(1, 1, 1) translate3d(0px, 0%, 0px) rotateZ(180deg);
+			opacity: 1;
+			background-position: 50% 50%;
+			transform-origin: 50% 50%;
+		}
+		#p.second-on {
+			transition: transform ease-in 500ms, opacity ease-out 1s;
+			transform: scale3d(4, 4, 1) translate3d(0px, 0%, 0px) rotateZ(0deg);
+			opacity: 0;
+		}
 		section {
+			z-index: 3;
 			position: absolute;
 			width: 100%;
 			height: 100%;
@@ -101,6 +130,7 @@
 				</div>
 			</div>
     	</section>
+    	<div id="p"></div>
     </div>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
@@ -112,6 +142,7 @@
     	var welcome = $('#welcome').css('z-index', 9);
     	var second = $('#second').css('z-index', 8);
     	var third= $('#third').css('z-index', 7);
+    	var p = $('#p').addClass('first');
     	
     	var click = function (source, target) {
     		return function _click(e) {
@@ -123,11 +154,23 @@
    			};	
     	};
     	
+    	var activateP = function (remove, prefix) {
+    		return function (e) {
+    			p.removeClass(remove).removeClass(remove+'-on').width();
+    			p.addClass(prefix).width()
+    			p.addClass(prefix+'-on');	
+    		};
+    	};
+    	
     	var init = function () {
-    		welcome.css('opacity', 1)
-    			.find('button').click(click(welcome, second));
+    		welcome.css({opacity: 1})
+    			.find('button')
+    				.click(click(welcome, second))
+    				.click(activateP('','first'));
     			
-    		 second.find('button').click(click(second, third));
+    		 second.find('button')
+    		 	.click(click(second, third))
+    		 	.click(activateP('first','second'));
     	};
     	
     	$(init);
