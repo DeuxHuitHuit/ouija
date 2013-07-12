@@ -1,0 +1,138 @@
+<!DOCTYPE html public "?">
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="description" content="Did you ever played Ouija?" />
+    <meta name="author" content="@nitriques" />
+    <meta name="copyrights" content="Deux Huit Huit" />
+
+    <title>Did you ever played Ouija?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	
+    <link href="http://fonts.googleapis.com/css?family=Merriweather+Sans:400,800" rel="stylesheet" type="text/css" />
+
+	<style>
+		html, body {
+			margin: 0;
+			padding: 0;
+			font-size: 62.5%;
+			color: brown;
+			font-family: 'Merriweather Sans', Sans-serif;
+		}
+		#main {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;	
+
+			z-index: 1;
+			background: magenta url(img/ouija.png) no-repeat 50% 50%;
+			background-size: cover;
+		}
+		section {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			display: table;
+			opacity: 0;	
+			transition: opacity ease-in 400ms;
+		}
+		
+		section .wrap {
+			padding: 0 15em;
+			display: table-cell;
+			text-align: center;
+			vertical-align: middle;	
+		}
+		
+		section .wrap>.yes,
+		section .wrap>.no {
+			display: none;	
+		}
+		
+		section.yes>.wrap>.yes,
+		section.no>.wrap>.no {
+			display: block;	
+		}
+		
+		h1 {
+			padding: 0;
+			margin: 0;
+			font-size: 7rem;
+			line-height: 9rem;
+			text-align: center;
+			text-shadow: #fff 1px 1px, #fff 2px 2px, #fff 3px 3px, #fff 4px 4px, #fff 5px 5px;	
+		}
+	</style>
+</head>
+<body>
+    <div id="main">
+    	<section id="welcome">
+    		<div class="wrap">
+	    		<h1>Did you ever played Ouija?</h1>
+	    		<div>
+	    			<button data-value="yes">Yes, sadly.</button>
+	    			<button data-value="no">Hell fuck no!</button>
+	    		</div>
+	    	</div>
+    	</section>
+    	<section id="second">
+    		<div class="wrap">
+	    		<div class="yes">
+	    			<h1>Did you ever moved the fucking piece?</h1>
+	    			<div>
+		    			<button data-value="yes">Yes!</button>
+		    			<button data-value="no">No!</button>
+		    		</div>
+	    		</div>
+	    		<div class="no">
+	    			<h1>Maybe it's because you do not have any friends...</h1>
+	    		</div>
+	    	</div>
+    	</section>
+    	<section id="third">
+    		<div class="wrap">
+	    		<div class="yes">
+	    			<h1>FUCKER! I knew it was you!</h1>
+	    		</div>
+				<div class="no">
+					<h1>LIAR! I kown it is you!</h1>
+				</div>
+			</div>
+    	</section>
+    </div>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script>
+    (function ($) {
+    	
+    	var zIndex = 10;
+    	
+    	var welcome = $('#welcome').css('z-index', 9);
+    	var second = $('#second').css('z-index', 8);
+    	var third= $('#third').css('z-index', 7);
+    	
+    	var click = function (source, target) {
+    		return function _click(e) {
+   				var context = $(this);
+   				var val = context.attr('data-value');
+   				
+   				source.css({opacity: 0});
+   				target.addClass(val).css({'z-index': zIndex++, opacity: 1});
+   			};	
+    	};
+    	
+    	var init = function () {
+    		welcome.css('opacity', 1)
+    			.find('button').click(click(welcome, second));
+    			
+    		 second.find('button').click(click(second, third));
+    	};
+    	
+    	$(init);
+    	
+    })(jQuery);
+    </script>
+</body>
+</html>
